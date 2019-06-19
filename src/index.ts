@@ -1,7 +1,5 @@
 import fs from 'fs';
 
-console.log('hello');
-
 import { CSVFileReader } from './CSVFileReader';
 import { MatchResult } from './MatchResult';
 
