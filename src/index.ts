@@ -1,30 +1,21 @@
-import fs from 'fs';
-import { request } from './fetch-request-example';
 import { MatchReader } from './MatchReader';
-import { MatchResult } from './MatchResult';
 import { CSVFileReader } from './CSVFileReader';
+import { ConsoleReport } from './reporters/ConsoleReport';
+import { HTMLReport } from './reporters/HTMLReport';
+import { WinsAnalysis } from './analyzers/WinsAnalysis';
+import { Summary } from './Summary';
 
 const csvFileReader = new CSVFileReader('football.csv');
 const matchReader = new MatchReader(csvFileReader);
 matchReader.load();
-const matches = matchReader.matches;
+
+const summaryLog = new Summary(new WinsAnalysis('Liverpool'), new ConsoleReport());
+const summaryHTML = new Summary(new WinsAnalysis('Tottenham'), new HTMLReport());
+
+summaryLog.buildAndPrintReport(matchReader.matches);
+summaryHTML.buildAndPrintReport(matchReader.matches);
 
 // console.log('Matches', matches);
-
-let totalWins = 0;
-let homeWins = 0;
-let awayWins = 0;
-
-for (let match of matches) {
-  if (match[1] === 'Tottenham' && match[5] === MatchResult.HomeWin) {
-    homeWins++;
-  } else if (match[2] === 'Tottenham' && match[5] === MatchResult.AwayWin) {
-    awayWins++;
-  }
-}
-totalWins = homeWins + awayWins;
-
-console.log(`Team Tottenham won: Home Wins: ${homeWins}, Away Wins: ${awayWins}, Total Wins: ${totalWins} this season`);
 
 /**
  * Fetch Demo with Typescript
