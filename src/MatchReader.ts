@@ -8,6 +8,10 @@ interface DataReader {
   data: string[][];
 }
 export class MatchReader {
+  static fromCSV(filename: string): MatchReader {
+    return new MatchReader(new CSVFileReader(filename));
+  }
+
   matches: MatchData[] = [];
 
   constructor(public reader: DataReader) {}

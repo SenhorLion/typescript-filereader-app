@@ -9,13 +9,25 @@ const csvFileReader = new CSVFileReader('football.csv');
 const matchReader = new MatchReader(csvFileReader);
 matchReader.load();
 
-const summaryLog = new Summary(new WinsAnalysis('Liverpool'), new ConsoleReport());
+// Classsic way to instantiate and use the Summary instance
+// => for Console.log output
+const summaryLog = new Summary(new WinsAnalysis('Bournemouth'), new ConsoleReport());
+// => for HTML output
 const summaryHTML = new Summary(new WinsAnalysis('Tottenham'), new HTMLReport());
 
 summaryLog.buildAndPrintReport(matchReader.matches);
 summaryHTML.buildAndPrintReport(matchReader.matches);
 
-// console.log('Matches', matches);
+const matchReaderFromCSV = MatchReader.fromCSV('football.csv');
+matchReaderFromCSV.load();
+
+// Using static methods on class instances to access data report
+const summaryWithHTML = Summary.analysisWithHtmlReport('Tottenham');
+const summaryWithLog = Summary.analysisWithLogReport('Southampton');
+
+summaryWithLog.buildAndPrintReport(matchReaderFromCSV.matches);
+
+summaryWithHTML.buildAndPrintReport(matchReaderFromCSV.matches);
 
 /**
  * Fetch Demo with Typescript
